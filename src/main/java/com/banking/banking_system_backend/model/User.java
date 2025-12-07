@@ -2,6 +2,7 @@ package com.banking.banking_system_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.banking.banking_system_backend.model.Role;
 
 @Entity
 @Table(name = "users")
@@ -20,5 +21,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String role = "ADMIN";
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.ADMIN;
 }

@@ -39,7 +39,17 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth -> auth
+                // Public endpoints
                 .requestMatchers("/auth/**").permitAll()
+
+                // Admin-only endpoints
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // User + Admin endpoints
+                .requestMatchers("/account/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/transactions/**").hasAnyRole("ADMIN","USER")
+
+                // Everything else requires authentication
                 .anyRequest().authenticated()
         );
 

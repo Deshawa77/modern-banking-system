@@ -1,42 +1,56 @@
 package com.banking.banking_system_backend.security;
 
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Value;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    @Value("${jwt.expirationMs}")
-    private int jwtExpirationMs;
+    private final long jwtExpirationMs = 86400000;
 
-    // Generate JWT token
-    public String generateJwtToken(String username) {
+    private Key getSigningKey() {
+        return key;
+    }
+
+    public String generateJwtToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Get username from token
     public String getUsernameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return extractAllClaims(token).getSubject();
     }
 
-    // Validate token
-    public boolean validateJwtToken(String authToken) {
+    public String getRoleFromToken(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    public boolean validateJwtToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            extractAllClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

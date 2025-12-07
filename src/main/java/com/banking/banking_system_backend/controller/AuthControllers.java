@@ -1,4 +1,4 @@
-/*package com.banking.banking_system_backend.controller;
+package com.banking.banking_system_backend.controller;
 
 import com.banking.banking_system_backend.dto.RegisterRequest;
 import com.banking.banking_system_backend.model.Role;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-public class javaAuthController {
+public class AuthControllers {
 
     @Autowired
     private AuthenticationManager authManager;
@@ -51,8 +51,15 @@ public class javaAuthController {
             throw e;
         }
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String token = jwtUtils.generateJwtToken(userDetails.getUsername());
+        // ✅ Fetch user from DB to get the role
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // ✅ Generate JWT with username + role
+        String token = jwtUtils.generateJwtToken(
+                user.getUsername(),
+                user.getRole().name()
+        );
 
         return new LoginResponse(token);
     }
@@ -90,4 +97,3 @@ public class javaAuthController {
         private final String token;
     }
 }
-*/
