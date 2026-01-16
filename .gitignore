@@ -1,0 +1,15 @@
+# Backend
+banking-system-backend/target/
+banking-system-backend/.idea/
+
+# Frontend
+banking-system-frontend/node_modules/
+banking-system-frontend/dist/
+
+# Env files
+.env
+*.env
+
+# OS
+Thumbs.db
+.DS_Store

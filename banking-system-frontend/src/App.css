@@ -1,0 +1,46 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em var(--primary-color));
+}
+
+.container {
+  max-width: 1200px;
+  width: 95%;
+  margin: 2em auto;
+}
+
+h2 {
+  font-size: 2.5em;
+  margin-bottom: 1.5em;
+  color: var(--text-light);
+}
+
+/* Generic card */
+.card {
+  background: var(--bg-color);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--border-radius);
+  padding: 2em;
+  margin: 1.5em 0;
+  box-shadow: var(--card-shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 20px var(--primary-color);
+}
