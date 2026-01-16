@@ -1,15 +1,20 @@
-# Backend
+# Backend (Spring Boot)
 banking-system-backend/target/
 banking-system-backend/.idea/
+*.iml
+.mvn/wrapper/maven-wrapper.jar
 
-# Frontend
+# Frontend (React / Vite)
 banking-system-frontend/node_modules/
 banking-system-frontend/dist/
 
-# Env files
+# Environment files
 .env
 *.env
 
-# OS
+# IDE / Editor
+.vscode/
+
+# OS files
 Thumbs.db
 .DS_Store
